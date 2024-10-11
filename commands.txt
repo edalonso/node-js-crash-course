@@ -1,0 +1,28 @@
+https://redis.io/learn/develop/node/nodecrashcourse/sessionstorage
+
+curl -X POST http://localhost:30000/api/checkin
+curl -X POST -H 'Content-Type: application/json' -d '{ "email": "al.appelhof@example.com", "password": "secret123" }' -c - http://localhost:30000/login
+
+curl -X POST http://localhost:30000/api/checkin -H 'Content-Type: application/json' -d '{"userid": 77, "locationId": 200, "starRating": 3}' --cookie "checkinapp=<cookie>"
+
+
+Inside Redis POD:
+
+kubectl exec -it redis-65d77c5f9-tp6kk -- redis-cli
+
+
+See all sessions:
+127.0.0.1:6379> keys ncc:session:*
+1) "ncc:session:LTPfxgcH1qsy_PIZU8PdL7ayKhfF59KL"
+2) "ncc:session:lxou0oCwkfHPEQs1RpkUSYZTEaLMCGmI"
+3) "ncc:session:RIbtJsiLUSg8uAAAa4bGe6bgrCPBKEJJ"
+4) "ncc:session:i-iA0AmH32TfCq649yyigXs3G37wkXcn"
+5) "ncc:session:S44VTZL2hAsaz6A6q6IXWGei1Yf3edE4"
+
+
+Obtain information of a session:
+127.0.0.1:6379> get ncc:session:LTPfxgcH1qsy_PIZU8PdL7ayKhfF59KL
+
+
+curl http://localhost:30000/logout  --cookie "checkinapp=<cookie>" 
+

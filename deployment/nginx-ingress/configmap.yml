@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+  allow-snippet-annotations: "true"
+  ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA;"
+  ssl-protocols: "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.6.4
+  name: ingress-nginx-controller
+  namespace: routing-system
+---
+apiVersion: v1
+data:
+  X-ARR-CLIENTCERT: $ssl_client_escaped_cert
+  #X-ARR-CLIENTCERT: $http_x_arr_clientcert
+  X-ARR-ClientCert_serial: $ssl_client_serial
+  X-ARR-ClientCert_cn: $ssl_client_s_dn
+  X-ARR-ClientCertSerial: $ssl_client_serial
+kind: ConfigMap
+metadata:
+  name: custom-headers
+  namespace: routing-system

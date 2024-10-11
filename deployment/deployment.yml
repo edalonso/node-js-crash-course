@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis/redis-stack
+        resources:
+          limits:
+            cpu: 200m
+            memory: 600Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        ports:
+        - containerPort: 1323
+        volumeMounts:
+          - mountPath: /data/
+            name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-rediscrashcourse
+  labels:
+    app: node-rediscrashcourse
+spec:
+  selector:
+    matchLabels:
+      app: node-rediscrashcourse
+  template:
+    metadata:
+      labels:
+        app: node-rediscrashcourse
+    spec:
+      containers:
+      - name: node-rediscrashcourse
+        image: node-rediscrashcourse:0.1
+        command: ["sh", "-c", "npm run checkinreceiver auth"]
+        env:
+        - name: CRASH_COURSE_CONFIG_FILE
+          value: config_docker.json
+        resources:
+          limits:
+            cpu: 200m
+            memory: 600Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        ports:
+        - containerPort: 8082
+        volumeMounts:
+          - mountPath: /app/config_docker.json
+            subPath: config_docker.json
+            name: config
+      volumes:
+        - name: config
+          configMap:
+            name: config
+            defaultMode: 0777
+            items:
+              - key: config_docker.json
+                path: config_docker.json
+      initContainers:
+      - image: node-rediscrashcourse:0.1
+        name: node-rediscrashcourse-init
+        command: ["sh", "-c", "npm run load all"]
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-rediscrashcourse-auth
+  labels:
+    app: node-rediscrashcourse-auth
+spec:
+  selector:
+    matchLabels:
+      app: node-rediscrashcourse-auth
+  template:
+    metadata:
+      labels:
+        app: node-rediscrashcourse-auth
+    spec:
+      containers:
+      - name: node-rediscrashcourse-auth
+        image: node-rediscrashcourse:0.1
+        command: ["sh", "-c", "npm run auth"]
+        env:
+        - name: CRASH_COURSE_CONFIG_FILE
+          value: config_docker.json
+        resources:
+          limits:
+            cpu: 200m
+            memory: 600Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        ports:
+        - containerPort: 8083
+        volumeMounts:
+          - mountPath: /app/config_docker.json
+            subPath: config_docker.json
+            name: config
+      volumes:
+        - name: config
+          configMap:
+            name: config
+            defaultMode: 0777
+            items:
+              - key: config_docker.json
+                path: config_docker.json
+      initContainers:
+      - image: node-rediscrashcourse:0.1
+        name: node-rediscrashcourse-init
+        command: ["sh", "-c", "npm run load all"]
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi

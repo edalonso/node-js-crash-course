@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  config_docker.json: "{\n    \"logLevel\": \"debug\",\n    \"session\": {\n      \"secret\":
+    \"red15alltheTh1ngZ!\",\n      \"appName\": \"checkinapp\",\n      \"keyPrefix\":
+    \"session\"  \n    },\n    \"application\": {\n      \"port\": 8081\n    },\n
+    \   \"auth\": {\n      \"port\": 8083\n    },\n    \"checkinReceiver\": {\n      \"port\":
+    8082,\n      \"maxStreamLength\": 500000\n    },\n    \"redis\": {\n      \"host\":
+    \"redis\",\n      \"port\": 6379,\n      \"password\": null,\n      \"keyPrefix\":
+    \"ncc\"\n    }\n  }"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: config
