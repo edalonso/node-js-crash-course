@@ -26,3 +26,8 @@ Obtain information of a session:
 
 curl http://localhost:30000/logout  --cookie "checkinapp=<cookie>" 
 
+
+Delete kind cluster:
+kind delete cluster --name node-js-crash-course-auth
+
+
