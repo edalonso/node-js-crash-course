@@ -3,7 +3,7 @@ https://redis.io/learn/develop/node/nodecrashcourse/sessionstorage
 curl -X POST http://localhost:30000/api/checkin
 curl -X POST -H 'Content-Type: application/json' -d '{ "email": "al.appelhof@example.com", "password": "secret123" }' -c - http://localhost:30000/login
 
-curl -X POST http://localhost:30000/api/checkin -H 'Content-Type: application/json' -d '{"userid": 77, "locationId": 200, "starRating": 3}' --cookie "checkinapp=<cookie>"
+curl -X POST http://localhost:30000/api/checkin -H 'Content-Type: application/json' -d '{"userId": 77, "locationId": 200, "starRating": 3}' --cookie "checkinapp=<cookie>"
 
 
 Inside Redis POD:
