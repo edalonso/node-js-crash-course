@@ -24,7 +24,7 @@ spec:
             cpu: 50m
             memory: 100Mi
         ports:
-        - containerPort: 1323
+        - containerPort: 6379
         volumeMounts:
           - mountPath: /data/
             name: data
